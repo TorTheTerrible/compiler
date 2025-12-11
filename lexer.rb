@@ -29,6 +29,21 @@ def getTokens(path)
         
         elsif "}".include?(t)
             tokens.append("closed_bracket")
+
+        elsif t == "return"
+            tokens.append("return")
+
+        elsif t == ";"
+            tokens.append("semicolon")
+
+        elsif t == "("
+            tokens.append("open_paren")
+
+        elsif t == ")"
+            tokens.append("closed_paren")
+
+        else
+            tokens.append("identifier")
         end
 
 
