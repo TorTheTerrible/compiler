@@ -1,16 +1,8 @@
-#dave = Customer.new("Dave", "123 Main")
-#dave.name     #=> "Dave"
-#dave.greeting #=> "Hello Dave!"
-#Token = Struct.new(:token, :type)
-#Node = Struct.new(:token, :child)
-#$pointer = 0
-#$start = []
-
-def getTokens(path)
+def createLexems(path)
     file = File.open path
     input = file.read
     file.close
-    input = input.gsub(/[;()]/, ' \0')
+    input = input.gsub(/[;()]{}/, ' \0')
 
     contents = input.split(" ")
     tokens = []
@@ -42,15 +34,58 @@ def getTokens(path)
         elsif t == ")"
             tokens.append("closed_paren")
 
+        elsif t == "+"
+            tokens.append("addition")
+
         else
             tokens.append("identifier")
         end
-
-
     end
     return tokens
 end
 
+def match(char)
+    if e[i] == char
+        i += 1
+    else
+        puts "error"
+        exit
+    end
+end
+
+def E()
+    if e[i] == "keyword"
+        match("keyword")
+        EE()
+    end
+end
+    
+def intParse()
+    if e[i] == "int_literal"
+        match("int_literal")
+    else
+        puts "error"
+    end
+end
+
+def semicolonParse()
+    if e[i] == "semicolon"
+        match("semicolon")
+    else
+        puts "error"
+    end
+end
+
+def EE()
+    if e[i] == "addition"
+        match("addition")
+        match("int_literal")
+        EE()
+    else
+        semicolonParse()
+    end
+end
+
 #lex tokens
-tokens = getTokens("code.txt")
+tokens = createLexems("code.txt")
 puts tokens
